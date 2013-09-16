@@ -28,10 +28,13 @@ typedef struct Student
 {
     int id;
     int name;
-    struct Student * pNext;
+    struct Student * next;
 }tStudent;
 
 tStudent * pHead = NULL;
+
+int insert(int id,int name);
+tStudent* search(int id);
 
 int main()
 {
@@ -41,23 +44,34 @@ int main()
     /* insert 1000 students */
     for (i=0;i<1000;i++)
     {
-        pStudent        = (tStudent *)malloc(sizeof(tStudent));
-        pStudent->id    = i;
-        pStudent->name  = i;
-        pStudent->next  = pHead;
-        pHead           = pStudent;
+        insert(i,i);
     }
 
     for (i=0;i<1000;i++)
     {
         /* random() return long int value,0 to (2^31 - 1) */
         int id = random() % 1000; 
-        pStudent = pHead;
-        while(pStudent->id != id)
-        {
-            pStudent = pStudent->next;
-        }
-        printf("find student %d\n",pStudent->id);
+        pStudent = search(id);
     }   
     return 0;  
+}
+
+int insert(int id,int name)
+{
+    tStudent * pStudent = NULL;
+    pStudent        = (tStudent *)malloc(sizeof(tStudent));
+    pStudent->id    = id;
+    pStudent->name  = name;
+    pStudent->next  = pHead;
+    pHead           = pStudent;   
+}
+tStudent* search(int id)
+{
+    tStudent * pStudent = NULL;
+    pStudent = pHead;
+    while(pStudent->id != id)
+    {
+        pStudent = pStudent->next;
+    }
+    printf("find student %d\n",pStudent->id);   
 }
