@@ -16,13 +16,14 @@
  * Revision log:
  *
  * Created by Mengning,2012/12/30
+ * Verified callback and head/next for search by Mengning,2012/09/17
  *
  */
 
-
-#include"linktable.h"
 #include<stdio.h>
 #include<stdlib.h>
+
+#include"linktable.h"
 
 #define debug   
 
@@ -32,7 +33,8 @@ typedef struct Node
 	int data;
 }tNode;
 
-tLinkTableNode * Search(tLinkTable *pLinkTable);
+tNode * Search(tLinkTable *pLinkTable);
+int SearchConditon(tLinkTableNode * pLinkTableNode);
 
 int main()
 {
@@ -45,8 +47,12 @@ int main()
         debug("AddLinkTableNode\n");
         AddLinkTableNode(pLinkTable,(tLinkTableNode *)pNode);
     }
+    /* search by callback */
     debug("SearchLinkTableNode\n");
-    tNode* pTempNode = (tNode*)SearchLinkTableNode(pLinkTable,Search);
+    tNode* pTempNode = (tNode*)SearchLinkTableNode(pLinkTable,SearchConditon);
+    printf("%d\n",pTempNode->data);
+    /* search one by one */
+    pTempNode = Search(pLinkTable);
     printf("%d\n",pTempNode->data);
     debug("DelLinkTableNode\n");
     DelLinkTableNode(pLinkTable,(tLinkTableNode *)pTempNode);
@@ -54,7 +60,7 @@ int main()
     DeleteLinkTable(pLinkTable);
 }
 
-tLinkTableNode * Search(tLinkTable *pLinkTable)
+tNode * Search(tLinkTable *pLinkTable)
 {
     debug("Search GetLinkTableHead\n");
     tNode * pNode = (tNode*)GetLinkTableHead(pLinkTable);
@@ -62,10 +68,20 @@ tLinkTableNode * Search(tLinkTable *pLinkTable)
     {
         if(pNode->data == 5)
         {
-            return  (tLinkTableNode*)pNode;  
+            return  pNode;  
         }
         debug("GetNextLinkTableNode\n");
         pNode = (tNode*)GetNextLinkTableNode(pLinkTable,(tLinkTableNode *)pNode);
     }
     return NULL;
+}
+
+int SearchConditon(tLinkTableNode * pLinkTableNode)
+{
+    tNode * pNode = (tNode *)pLinkTableNode;
+    if(pNode->data == 6)
+    {
+        return  SUCCESS;  
+    }
+    return FAILURE;	       
 }

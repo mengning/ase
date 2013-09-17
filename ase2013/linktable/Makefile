@@ -20,4 +20,4 @@ all:	$(OBJS)
 
 clean:
 
-	$(RM) $(RM_FLAGS)  $(OBJS) $(TARGET)
+	$(RM) $(RM_FLAGS)  $(OBJS) $(TARGET) *.bak

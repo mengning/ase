@@ -24,6 +24,9 @@
 
 #include <pthread.h>
 
+#define SUCCESS 0
+#define FAILURE (-1)
+
 /*
  * LinkTable Node Type
  */
@@ -62,9 +65,9 @@ int AddLinkTableNode(tLinkTable *pLinkTable,tLinkTableNode * pNode);
 int DelLinkTableNode(tLinkTable *pLinkTable,tLinkTableNode * pNode);
 /*
  * Search a LinkTableNode from LinkTable
- * tLinkTableNode * CmpFn(tLinkTable *pLinkTable);
+ * int Conditon(tLinkTableNode * pNode);
  */
-tLinkTableNode * SearchLinkTableNode(tLinkTable *pLinkTable,tLinkTableNode * CmpFn(tLinkTable *pLinkTable));
+tLinkTableNode * SearchLinkTableNode(tLinkTable *pLinkTable, int Conditon(tLinkTableNode * pNode));
 /*
  * get LinkTableHead
  */

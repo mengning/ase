@@ -16,16 +16,14 @@
  * Revision log:
  *
  * Created by Mengning,2012/12/30
+ * Provide right Callback interface by Mengning,2012/09/17
  *
  */
 
-
-#include"linktable.h"
 #include<stdio.h>
 #include<stdlib.h>
 
-#define SUCCESS 0
-#define FAILURE (-1)
+#include"linktable.h"
 
 /*
  * Create a LinkTable
@@ -139,15 +137,24 @@ int DelLinkTableNode(tLinkTable *pLinkTable,tLinkTableNode * pNode)
 
 /*
  * Search a LinkTableNode from LinkTable
- * tLinkTableNode * CmpFn(tLinkTable *pLinkTable);
+ * int Conditon(tLinkTableNode * pNode);
  */
-tLinkTableNode * SearchLinkTableNode(tLinkTable *pLinkTable,tLinkTableNode * CmpFn(tLinkTable *pLinkTable))
+tLinkTableNode * SearchLinkTableNode(tLinkTable *pLinkTable, int Conditon(tLinkTableNode * pNode))
 {
-    if(pLinkTable == NULL || CmpFn == NULL)
+    if(pLinkTable == NULL || Conditon == NULL)
 	{
 		return NULL;
     }
-    return CmpFn(pLinkTable);
+    tLinkTableNode * pNode = pLinkTable->pHead;
+	while(pNode != pLinkTable->pTail)
+    {    
+		if(Conditon(pNode) == SUCCESS)
+        {
+    		return pNode;				    
+		}
+		pNode = pNode->pNext;
+	}
+	return NULL;
 }
 
 /*
