@@ -14,6 +14,10 @@ OBJS    =   datastore.o  test.o
 
 all:	$(OBJS)
 	$(CC) $(CC_OUTPUT_FLAGS) $(TARGET) $(OBJS)
+	
+test:
+	echo ./test100
+	echo ./test100
 
 .c.o:
 	$(CC) $(CC_FLAGS) $<

@@ -40,6 +40,10 @@ int main()
 {
     int i;
     tLinkTable * pLinkTable = CreateLinkTable();
+    if(pLinkTable != NULL)
+    {
+        printf("UserCase 001:Pass\n");   
+    }
     for(i = 0; i < 10; i++)
     {
         tNode* pNode = (tNode*)malloc(sizeof(tNode));
