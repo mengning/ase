@@ -23,57 +23,62 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int Help();
+
+#define CMD_MAX_LEN 128
 #define DESC_LEN    1024
 #define CMD_NUM     10
 
 typedef struct DataNode
 {
-    int     cmd;
-    char    desc[DESC_LEN];
+    char*   cmd;
+    char*   desc;
+    int     (*handler)();
     struct  DataNode *next;
 } tDataNode;
 
+static tDataNode head[] = 
+{
+    {"help", "this is help cmd!", Help,&head[1]},
+    {"version", "menu program v1.0", NULL, NULL}
+};
 main()
 {
-    tDataNode *head = NULL;
-    /* Init cmd list */
-    int i;
-    tDataNode * p = NULL;
-    for (i=0; i<CMD_NUM; i++)
-    {
-        p = (tDataNode*)malloc(sizeof(tDataNode));
-        p->cmd = i;
-        snprintf(p->desc, DESC_LEN, "This is %d cmd!", i);
-        p->next = head;
-        head = p;
-    }
-    printf("Menu List:\n");
-    p = head;
-    while(p != NULL)
-    {
-        printf("%d - %s\n", p->cmd, p->desc);
-        p = p->next;
-    }
-    /* cmd line begins */
+   /* cmd line begins */
     while(1)
     {
-        int cmd;
+        char cmd[CMD_MAX_LEN];
         printf("Input a cmd number > ");
-        scanf("%d", &cmd);
-        if(cmd >= CMD_NUM)
-        {
-            printf("This is a wrong cmd number!\n ");
-            continue;
-        }
-        p = head;
+        scanf("%s", cmd);
+        tDataNode *p = head;
         while(p != NULL)
         {
-            if(p->cmd == cmd)
+            if(!strcmp(p->cmd, cmd))
             {
-                printf("%d - %s\n", p->cmd, p->desc);
+                printf("%s - %s\n", p->cmd, p->desc);
+                if(p->handler != NULL)
+                {
+                    p->handler();
+                }
                 break;
             }
             p = p->next;
         }
+        if(p == NULL) 
+        {
+            printf("This is a wrong cmd!\n ");
+        }
     }
+}
+
+int Help()
+{
+    printf("Menu List:\n");
+    tDataNode *p = head;
+    while(p != NULL)
+    {
+        printf("%s - %s\n", p->cmd, p->desc);
+        p = p->next;
+    }
+    return 0; 
 }
