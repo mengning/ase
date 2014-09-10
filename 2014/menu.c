@@ -22,52 +22,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "linklist.h"
 
 int Help();
 
 #define CMD_MAX_LEN 128
 #define DESC_LEN    1024
 #define CMD_NUM     10
-
-/* data struct and its operations */
-
-typedef struct DataNode
-{
-    char*   cmd;
-    char*   desc;
-    int     (*handler)();
-    struct  DataNode *next;
-} tDataNode;
-
-tDataNode* FindCmd(tDataNode * head, char * cmd)
-{
-    if(head == NULL || cmd == NULL)
-    {
-        return NULL;        
-    }
-    tDataNode *p = head;
-    while(p != NULL)
-    {
-        if(!strcmp(p->cmd, cmd))
-        {
-            return p;
-        }
-        p = p->next;
-    }
-    return NULL;
-}
-
-int ShowAllCmd(tDataNode * head)
-{
-    printf("Menu List:\n");
-    tDataNode *p = head;
-    while(p != NULL)
-    {
-        printf("%s - %s\n", p->cmd, p->desc);
-        p = p->next;
-    }
-    return 0; 
-}
 
 /* menu program */
 
