@@ -22,7 +22,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "linklist.h"
+#include "linktable.h"
 
 int Help();
 
@@ -30,16 +30,59 @@ int Help();
 #define DESC_LEN    1024
 #define CMD_NUM     10
 
+/* data struct and its operations */
+
+typedef struct DataNode
+{
+    tLinkTableNode * pNext;
+    char*   cmd;
+    char*   desc;
+    int     (*handler)();
+} tDataNode;
+
+/* find a cmd in the linklist and return the datanode pointer */
+tDataNode* FindCmd(tLinkTable * head, char * cmd)
+{
+    tDataNode * pNode = (tDataNode*)GetLinkTableHead(head);
+    while(pNode != NULL)
+    {
+        if(!strcmp(pNode->cmd, cmd))
+        {
+            return  pNode;  
+        }
+        pNode = (tDataNode*)GetNextLinkTableNode(head,(tLinkTableNode *)pNode);
+    }
+    return NULL;
+}
+
+/* show all cmd in listlist */
+int ShowAllCmd(tLinkTable * head)
+{
+    tDataNode * pNode = (tDataNode*)GetLinkTableHead(head);
+    while(pNode != NULL)
+    {
+        printf("%s - %s\n", pNode->cmd, pNode->desc);
+        pNode = (tDataNode*)GetNextLinkTableNode(head,(tLinkTableNode *)pNode);
+    }
+    return 0;
+}
+
 /* menu program */
 
-static tDataNode head[] = 
+static tDataNode data[] = 
 {
-    {"help", "this is help cmd!", Help,&head[1]},
-    {"version", "menu program v1.0", NULL, NULL}
+    {NULL, "help", "this is help cmd!", Help},
+    {NULL, "version", "menu program v1.0", NULL}
 };
+
+tLinkTable * head = NULL;
 
 main()
 {
+    head = CreateLinkTable();
+    AddLinkTableNode(head,(tLinkTableNode *)&data[0]);
+    AddLinkTableNode(head,(tLinkTableNode *)&data[1]);
+    
    /* cmd line begins */
     while(1)
     {
