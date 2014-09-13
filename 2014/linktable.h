@@ -32,7 +32,7 @@
  */
 typedef struct LinkTableNode
 {
-	struct LinkTableNode * pNext;
+    struct LinkTableNode * pNext;
 }tLinkTableNode;
 
 /*
@@ -40,11 +40,10 @@ typedef struct LinkTableNode
  */
 typedef struct LinkTable
 {
-	tLinkTableNode *pHead;
-	tLinkTableNode *pTail;
-	int			SumOfNode;
-	pthread_mutex_t mutex;
-	
+    tLinkTableNode *pHead;
+    tLinkTableNode *pTail;
+    int			SumOfNode;
+    pthread_mutex_t mutex;
 }tLinkTable;
 
 /*
