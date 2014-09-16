@@ -25,6 +25,7 @@
 #include "linktable.h"
 
 int Help();
+int Quit();
 
 #define CMD_MAX_LEN 128
 #define DESC_LEN    1024
@@ -67,22 +68,35 @@ int ShowAllCmd(tLinkTable * head)
     return 0;
 }
 
-/* menu program */
-
-static tDataNode data[] = 
+int InitMenuData(tLinkTable ** ppLinktable)
 {
-    {NULL, "help", "this is help cmd!", Help},
-    {NULL, "version", "menu program v1.0", NULL}
-};
+    *ppLinktable = CreateLinkTable();
+    tDataNode* pNode = (tDataNode*)malloc(sizeof(tDataNode));
+    pNode->cmd = "help";
+    pNode->desc = "Menu List:";
+    pNode->handler = Help;
+    AddLinkTableNode(*ppLinktable,(tLinkTableNode *)pNode);
+    pNode = (tDataNode*)malloc(sizeof(tDataNode));
+    pNode->cmd = "version";
+    pNode->desc = "Menu Program V1.0";
+    pNode->handler = NULL; 
+    AddLinkTableNode(*ppLinktable,(tLinkTableNode *)pNode);
+    pNode = (tDataNode*)malloc(sizeof(tDataNode));
+    pNode->cmd = "quit";
+    pNode->desc = "Quit from Menu Program V1.0";
+    pNode->handler = Quit; 
+    AddLinkTableNode(*ppLinktable,(tLinkTableNode *)pNode);
+ 
+    return 0; 
+}
+
+/* menu program */
 
 tLinkTable * head = NULL;
 
 main()
 {
-    head = CreateLinkTable();
-    AddLinkTableNode(head,(tLinkTableNode *)&data[0]);
-    AddLinkTableNode(head,(tLinkTableNode *)&data[1]);
-    
+    InitMenuData(&head); 
    /* cmd line begins */
     while(1)
     {
@@ -108,4 +122,9 @@ int Help()
 {
     ShowAllCmd(head);
     return 0; 
+}
+
+int Quit()
+{
+    exit(0);
 }
