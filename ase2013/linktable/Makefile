@@ -19,5 +19,4 @@ all:	$(OBJS)
 	$(CC) $(CC_FLAGS) $<
 
 clean:
-
 	$(RM) $(RM_FLAGS)  $(OBJS) $(TARGET) *.bak

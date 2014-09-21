@@ -22,7 +22,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-
+#include<assert.h>
 #include"linktable.h"
 
 #define debug   
@@ -40,6 +40,7 @@ int main()
 {
     int i;
     tLinkTable * pLinkTable = CreateLinkTable();
+    assert(pLinkTable != NULL);
     for(i = 0; i < 10; i++)
     {
         tNode* pNode = (tNode*)malloc(sizeof(tNode));

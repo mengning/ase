@@ -22,7 +22,6 @@
 #ifndef _LINK_TABLE_H_
 #define _LINK_TABLE_H_
 
-#include <pthread.h>
 
 #define SUCCESS 0
 #define FAILURE (-1)
@@ -38,14 +37,7 @@ typedef struct LinkTableNode
 /*
  * LinkTable Type
  */
-typedef struct LinkTable
-{
-	tLinkTableNode *pHead;
-	tLinkTableNode *pTail;
-	int			SumOfNode;
-	pthread_mutex_t mutex;
-	
-}tLinkTable;
+typedef struct LinkTable tLinkTable;
 
 /*
  * Create a LinkTable
