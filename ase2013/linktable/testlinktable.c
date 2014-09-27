@@ -29,8 +29,8 @@
 
 typedef struct Node
 {
-	tLinkTableNode * pNext;
-	int data;
+    tLinkTableNode * pNext;
+    int data;
 }tNode;
 
 tNode * Search(tLinkTable *pLinkTable);
