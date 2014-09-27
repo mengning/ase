@@ -1,5 +1,6 @@
 This is a menu program!
 
 Build Procedure
-    $ gcc linktable.c menu.c -o menu
+    $ make clean
+    $ make
     $ ./menu # you can input help/version/quit cmd.

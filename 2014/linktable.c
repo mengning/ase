@@ -22,8 +22,21 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-
+#include <pthread.h>
 #include"linktable.h"
+
+/*
+ * LinkTable Type
+ */
+struct LinkTable
+{
+    tLinkTableNode *pHead;
+    tLinkTableNode *pTail;
+    int			SumOfNode;
+    pthread_mutex_t mutex;
+
+};
+
 
 /*
  * Create a LinkTable
@@ -41,6 +54,7 @@ tLinkTable * CreateLinkTable()
     pthread_mutex_init(&(pLinkTable->mutex), NULL);
     return pLinkTable;
 }
+
 /*
  * Delete a LinkTable
  */
@@ -66,6 +80,7 @@ int DeleteLinkTable(tLinkTable *pLinkTable)
     free(pLinkTable);
     return SUCCESS;		
 }
+
 /*
  * Add a LinkTableNode to LinkTable
  */
@@ -94,6 +109,7 @@ int AddLinkTableNode(tLinkTable *pLinkTable,tLinkTableNode * pNode)
     pthread_mutex_unlock(&(pLinkTable->mutex));
     return SUCCESS;		
 }
+
 /*
  * Delete a LinkTableNode from LinkTable
  */
@@ -146,7 +162,7 @@ tLinkTableNode * SearchLinkTableNode(tLinkTable *pLinkTable, int Conditon(tLinkT
         return NULL;
     }
     tLinkTableNode * pNode = pLinkTable->pHead;
-    while(pNode != pLinkTable->pTail)
+    while(pNode != NULL)
     {    
         if(Conditon(pNode) == SUCCESS)
         {
