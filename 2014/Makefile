@@ -9,8 +9,8 @@ CC                           = gcc
 RM                           = rm
 RM_FLAGS                     = -f
 
-TARGET  =   menu
-OBJS    =   linktable.o  menu.o
+TARGET  =   test
+OBJS    =   linktable.o  menu.o test.o
 
 all:	$(OBJS)
 	$(CC) $(CC_OUTPUT_FLAGS) $(TARGET) $(OBJS)

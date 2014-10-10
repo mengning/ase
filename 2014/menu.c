@@ -23,7 +23,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "linktable.h"
+#include "menu.h"
 
+tLinkTable * head = NULL;
 int Help();
 int Quit();
 
@@ -41,6 +43,16 @@ typedef struct DataNode
     int     (*handler)();
 } tDataNode;
 
+int SearchConditon(tLinkTableNode * pLinkTableNode,void * arg)
+{
+    char * cmd = (char*)arg;
+    tDataNode * pNode = (tDataNode *)pLinkTableNode;
+    if(!strcmp(pNode->cmd, cmd))
+    {
+        return  SUCCESS;  
+    }
+    return FAILURE;	       
+}
 /* find a cmd in the linklist and return the datanode pointer */
 tDataNode* FindCmd(tLinkTable * head, char * cmd)
 {
@@ -68,43 +80,44 @@ int ShowAllCmd(tLinkTable * head)
     return 0;
 }
 
-int InitMenuData(tLinkTable ** ppLinktable)
+int Help()
 {
-    *ppLinktable = CreateLinkTable();
-    tDataNode* pNode = (tDataNode*)malloc(sizeof(tDataNode));
-    pNode->cmd = "help";
-    pNode->desc = "Menu List:";
-    pNode->handler = Help;
-    AddLinkTableNode(*ppLinktable,(tLinkTableNode *)pNode);
-    pNode = (tDataNode*)malloc(sizeof(tDataNode));
-    pNode->cmd = "version";
-    pNode->desc = "Menu Program V1.0";
-    pNode->handler = NULL; 
-    AddLinkTableNode(*ppLinktable,(tLinkTableNode *)pNode);
-    pNode = (tDataNode*)malloc(sizeof(tDataNode));
-    pNode->cmd = "quit";
-    pNode->desc = "Quit from Menu Program V1.0";
-    pNode->handler = Quit; 
-    AddLinkTableNode(*ppLinktable,(tLinkTableNode *)pNode);
- 
+    ShowAllCmd(head);
     return 0; 
 }
 
-/* menu program */
-
-tLinkTable * head = NULL;
-
-main()
+/* add cmd to menu */
+int MenuConfig(char * cmd, char * desc, int (*handler)())
 {
-    InitMenuData(&head); 
+    tDataNode* pNode = NULL;
+    if ( head == NULL)
+    {
+        head = CreateLinkTable();
+        pNode = (tDataNode*)malloc(sizeof(tDataNode));
+        pNode->cmd = "help";
+        pNode->desc = "Menu List:";
+        pNode->handler = Help;
+        AddLinkTableNode(head,(tLinkTableNode *)pNode);
+    }
+    pNode = (tDataNode*)malloc(sizeof(tDataNode));
+    pNode->cmd = cmd;
+    pNode->desc = desc;
+    pNode->handler = handler; 
+    AddLinkTableNode(head,(tLinkTableNode *)pNode);
+    return 0; 
+}
+
+/* Menu Engine Execute */
+int ExecuteMenu()
+{
    /* cmd line begins */
     while(1)
     {
         char cmd[CMD_MAX_LEN];
         printf("Input a cmd number > ");
         scanf("%s", cmd);
-        tDataNode *p = FindCmd(head, cmd);
-        if( p == NULL)
+        tDataNode *p = (tDataNode*)SearchLinkTableNode(head,SearchConditon,(void*)cmd);
+       if( p == NULL)
         {
             printf("This is a wrong cmd!\n ");
             continue;
@@ -116,15 +129,4 @@ main()
         }
    
     }
-}
-
-int Help()
-{
-    ShowAllCmd(head);
-    return 0; 
-}
-
-int Quit()
-{
-    exit(0);
 }
